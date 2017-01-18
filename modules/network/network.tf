@@ -3,7 +3,6 @@ variable "region"               {}
 variable "vpc_cidr"             {}
 variable "azs"                  {}
 variable "private_subnets"      {
-  default = []
   type    = "list"
 }
 variable "public_subnets"       {

@@ -1,11 +1,11 @@
 {
   "builders": [
     {
-      "ami_name": "docker-swarm ",
+      "ami_name": "docker-engine-1.13",
       "ami_virtualization_type": "hvm",
       "associate_public_ip_address": "true",
       "instance_type": "t2.small",
-      "region": "us-west-2",
+      "region": "eu-west-1",
       "source_ami_filter": {
         "filters": {
           "name": "*ubuntu-yakkety-16.10-amd64-server-*",
@@ -15,13 +15,13 @@
         "most_recent": true
       },
       "ssh_username": "ubuntu",
-      "subnet_id": "subnet-ff0def98",
+      "subnet_id": "subnet-095d676d",
       "tags": {
         "OS_Version": "Ubuntu",
         "Release": "16.10"
       },
       "type": "amazon-ebs",
-      "security_group_ids": ["sg-11a68368"]
+      "security_group_ids": ["sg-79d3f91f"]
     }
   ],
   "post-processors": null,
@@ -34,9 +34,12 @@
     {
       "execute_command": "{{ .Vars }} sudo -E sh '{{ .Path }}'",
       "inline": [
-        "apt-get install -y aptitude",
-        "aptitude -y update",
-        "aptitude install -y docker docker-compose unzip",
+        "apt-get install -y aptitude apt-transport-https software-properties-common ca-certificates",
+        "curl -fsSL https://yum.dockerproject.org/gpg | sudo apt-key add -",
+        "apt-key fingerprint 58118E89F3A912897C070ADBF76221572C52609D",
+        "add-apt-repository \"deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main\"",
+        "apt-get -y update",
+        "apt-get install -y docker-engine docker-compose unzip",
         "mv /tmp/docker.options /etc/default/docker",
         "systemctl enable docker.service",
         "usermod -aG docker ubuntu"

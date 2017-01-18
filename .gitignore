@@ -1,0 +1,18 @@
+.terraform
+terraform.tfstate
+terraform.tfstate.backup
+.idea
+### OSX template
+.DS_Store
+.AppleDouble
+.LSOverride
+.*.sw?
+terraform.tfstate
+terraform.tfstate.backup
+.idea
+### OSX template
+.DS_Store
+.AppleDouble
+.LSOverride
+.*.sw?
+dev-marcal

@@ -1,4 +1,4 @@
-variable "ami"                  { default = "ami-fbdf4b88" }
+variable "ami"                  { default = "ami-907e33e3" }
 variable "vol_size"             { default = 8 }
 variable "vol_type"             { default = "gp2" }
 variable "tag_name"             { }

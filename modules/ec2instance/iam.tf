@@ -1,13 +1,13 @@
 variable "code_name"       { default = "" }
 
 resource "aws_iam_instance_profile" "ec2_instance" {
-  name  = "ec2_instance_${var.code_name}"
+  name  = "ec2_${var.code_name}"
   path  = "/"
-  roles = ["ec2_instance_${var.code_name}"]
+  roles = ["ec2_${var.code_name}"]
 }
 
 resource "aws_iam_role" "ec2_instance" {
-  name               = "ec2_instance_${var.code_name}"
+  name               = "ec2_${var.code_name}"
   path               = "/"
   assume_role_policy = <<POLICY
 {

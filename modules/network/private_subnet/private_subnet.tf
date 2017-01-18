@@ -49,4 +49,4 @@ resource "aws_route_table_association" "private" {
   lifecycle { create_before_destroy = true }
 }
 
-output "subnet_ids" { value = ["${aws_subnet.private.*.id}"] }
+output "subnet_ids" { value = "${join(",", aws_subnet.private.*.id)}" }

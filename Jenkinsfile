@@ -1,8 +1,8 @@
 import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
 
-def terraform_version = "terraform-0.7.3"
+def terraform_version = "terraform-0.8.5"
 print "terraform_version = ${terraform_version}"
-def envs = ["dev","staging"]
+def envs = ["dev"]
 
 def create_builders(terraform_command, envs) {
   builders = [:]

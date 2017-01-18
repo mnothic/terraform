@@ -1,9 +1,6 @@
 variable "vpc_name"             {}
 variable "vpc_cidr"             {}
-variable "vpc_private_subnets"  {
-  default = []
-  type    = "list"
-}
+variable "vpc_private_subnets"  {}
 variable "vpc_public_subnets"   {}
 variable "vpc_azs"              {}
 
@@ -13,7 +10,7 @@ module "network" {
   region          = "${var.region}"
   name            = "${var.vpc_name}"
   vpc_cidr        = "${var.vpc_cidr}"
-  private_subnets = "${var.vpc_private_subnets}"
+  private_subnets = "${split(",", var.vpc_private_subnets)}"
   public_subnets  = "${split(",", var.vpc_public_subnets)}"
   azs             = "${var.vpc_azs}"
 }
