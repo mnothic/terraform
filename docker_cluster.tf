@@ -21,8 +21,8 @@ module "docker_cluster" {
   subnet_id             = "${element(split(",",module.network.public_subnet_ids), 0)}"
   sg_cidr               = "${var.vpc_cidr}"
   private_key           = "~/21buttons/jenkins.pem"
-  swarm_manager_count   = 1
-  swarm_node_count      = 1
+  swarm_manager_count   = 2
+  swarm_node_count      = 2
 }
 
 output "swarm_managers" {

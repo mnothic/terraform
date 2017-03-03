@@ -57,7 +57,8 @@ resource "aws_instance" "swarm-manager" {
   source_dest_check           = true
   iam_instance_profile        = "${aws_iam_instance_profile.ec2_instance.name}"
   count                       = "${var.swarm_manager_count}"
-
+  master                      = "sudo docker swarm init"
+  slave                       = "docker swarm --manager join ${aws_instance.swarm-manager.0.private_ip}:2377 --token $(docker -H ${aws_instance.swarm-manager.0.private_ip} swarm join-token -q worker)"
   root_block_device {
     volume_type           = "${var.vol_type}"
     volume_size           = "${var.m_vol_size}"
@@ -72,7 +73,7 @@ resource "aws_instance" "swarm-manager" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo docker swarm init",
+      "${count.index == 0 ? var.master : var.slave}",
       "docker login -u mnothic -p ${file("~/.dockerhub")}"
     ]
   }
@@ -124,7 +125,7 @@ resource "aws_instance" "swarm-node" {
 
 resource "null_resource" "cluster" {
   triggers {
-    cluster_instance_ids = "${join(",", aws_instance.swarm-node.*.id)}"
+    cluster_instance_ids = "${aws_instance.swarm-manager.0.id}"
   }
 
   connection {
@@ -144,9 +145,9 @@ resource "null_resource" "cluster" {
 }
 
 output "swarm_managers" {
-  value = "${concat(aws_instance.swarm-manager.*.public_dns)}"
+  value = "${concat(aws_instance.swarm-manager.*.public_ip)}"
 }
 
 output "swarm_nodes" {
-  value = "${concat(aws_instance.swarm-node.*.public_dns)}"
+  value = "${concat(aws_instance.swarm-node.*.public_ip)}"
 }
